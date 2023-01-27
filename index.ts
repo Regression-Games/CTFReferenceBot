@@ -11,6 +11,7 @@ const BLUE_SCORE = new Vec3(160, 63, -385)
 export function configureBot(bot: RGBot) {
 
     bot.setDebug(true);
+    bot.allowDigWhilePathing(false);
 
     // This is our main loop. The Bot will invoke this on spawn.
     // goal: collect 100 Poppies
