@@ -30,15 +30,6 @@ export function configureBot(bot: RGBot) {
         await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE), {reach: 0.1})
     }
 
-    bot.on("entityEquip", async (entity: Entity) => {
-        let isMe = entity.displayName == bot.username()
-        let collectedItem = bot.mineflayer().inventory.selectedItem
-        bot.chat("Picked up a " + collectedItem.displayName)
-        // if (isMe && collectedItem.toLowerCase().includes("banner")) {
-        //     await returnFlag();
-        // }
-    })
-
     // Have the Bot begin our main loop when it spawns into the game
     bot.on('spawn', async () => {
         bot.chat('Get ready to face your doom!');
@@ -52,7 +43,10 @@ export function configureBot(bot: RGBot) {
 
     bot.on('chat', async (username: string, message: string) => {
         if (message == "get flag") {
-            getFlag();
+            await getFlag();
+        }
+        else if (message == "score") {
+            await returnFlag();
         }
     })
 
