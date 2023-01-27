@@ -32,7 +32,7 @@ export function configureBot(bot: RGBot) {
 
     bot.on("playerCollect", async (collector: Entity, collected: Item) => {
         let isMe = collector.displayName == bot.username()
-        let collectedItem = collected.displayName
+        let collectedItem = collected.id
         bot.chat("Picked up a " + collectedItem)
         if (isMe && collectedItem.toLowerCase().includes("banner")) {
             await returnFlag();
