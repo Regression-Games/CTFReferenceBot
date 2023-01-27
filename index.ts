@@ -26,7 +26,7 @@ export function configureBot(bot: RGBot) {
 
     async function returnFlag() {
         bot.chat("Catch me if you can!")
-        await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE))
+        await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE), {reach: 0.1})
     }
 
     bot.on("playerCollect", async (collector: Entity, collected: Item) => {
@@ -44,7 +44,6 @@ export function configureBot(bot: RGBot) {
 
         // If I spawned with a banner, run!
         if (bot.inventoryContainsItem("banner", {partialMatch: true})) {
-            bot.chat('What the... I have the flag???')
             await returnFlag();
         }
 
