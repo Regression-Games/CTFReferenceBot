@@ -11,10 +11,10 @@ export function configureBot(bot: RGBot) {
     // This is our main loop. The Bot will invoke this on spawn.
     // goal: collect 100 Poppies
     async function getFlag() {
-        let flags = bot.findBlock("white_banner", {maxDistance: 100})
-        if (flags) {
+        let flag = bot.findBlock("white_banner", {maxDistance: 100})
+        if (flag) {
             bot.chat("Going to get the flag!");
-            await bot.approachBlock(flags[0])
+            await bot.approachBlock(flag)
         } else {
             bot.chat("Did not find the flag")
         }
