@@ -1,6 +1,8 @@
 import { RGBot } from "rg-bot";
+import {Entity, Item} from "minecraft-data";
+import {Vec3} from "vec3";
 
-const BLUE_SCORE = [160, -385]
+const BLUE_SCORE = new Vec3(160, 63, -385)
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -22,9 +24,14 @@ export function configureBot(bot: RGBot) {
         }
     }
 
-    bot.on("playerCollect", async (collector, collected) => {
-        bot.chat(JSON.stringify(collector))
-        bot.chat(JSON.stringify(collected))
+    bot.on("playerCollect", async (collector: Entity, collected: Item) => {
+        let isMe = collector.displayName == bot.username()
+        let collectedItem = collected.name
+        bot.chat("Picked up a " + collectedItem)
+        if (isMe && collectedItem.includes("banner")) {
+            bot.chat("Catch me if you can!")
+            await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE))
+        }
     })
 
     // Have the Bot begin our main loop when it spawns into the game
