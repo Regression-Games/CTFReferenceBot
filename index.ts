@@ -34,9 +34,9 @@ export function configureBot(bot: RGBot) {
         let isMe = collector.displayName == bot.username()
         let collectedItem = collected.id
         bot.chat("Picked up a " + collectedItem)
-        if (isMe && collectedItem.toLowerCase().includes("banner")) {
-            await returnFlag();
-        }
+        // if (isMe && collectedItem.toLowerCase().includes("banner")) {
+        //     await returnFlag();
+        // }
     })
 
     // Have the Bot begin our main loop when it spawns into the game
