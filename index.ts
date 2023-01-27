@@ -45,7 +45,7 @@ export function configureBot(bot: RGBot) {
         // If I spawned with a banner, run!
         if (bot.inventoryContainsItem("banner", {partialMatch: true})) {
             bot.chat('What the... I have the flag???')
-            await
+            await returnFlag();
         }
 
     });
