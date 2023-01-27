@@ -19,7 +19,7 @@ export function configureBot(bot: RGBot) {
         bot.chat('Get ready to face your doom!');
     });
 
-    bot.on('chat', async (message: string, username: string) => {
+    bot.on('chat', async (username: string, message: string) => {
         if (message == "get flag") {
             getFlag();
         }
