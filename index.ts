@@ -24,19 +24,30 @@ export function configureBot(bot: RGBot) {
         }
     }
 
+    async function returnFlag() {
+        bot.chat("Catch me if you can!")
+        await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE))
+    }
+
     bot.on("playerCollect", async (collector: Entity, collected: Item) => {
         let isMe = collector.displayName == bot.username()
-        let collectedItem = collected.name
+        let collectedItem = collected.displayName
         bot.chat("Picked up a " + collectedItem)
-        if (isMe && collectedItem.includes("banner")) {
-            bot.chat("Catch me if you can!")
-            await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE))
+        if (isMe && collectedItem.toLowerCase().includes("banner")) {
+            await returnFlag();
         }
     })
 
     // Have the Bot begin our main loop when it spawns into the game
     bot.on('spawn', async () => {
         bot.chat('Get ready to face your doom!');
+
+        // If I spawned with a banner, run!
+        if (bot.inventoryContainsItem("banner", {partialMatch: true})) {
+            bot.chat('What the... I have the flag???')
+            await
+        }
+
     });
 
     bot.on('chat', async (username: string, message: string) => {
