@@ -30,10 +30,10 @@ export function configureBot(bot: RGBot) {
         await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE), {reach: 0.1})
     }
 
-    bot.on("playerCollect", async (collector: Entity, collected: Item) => {
-        let isMe = collector.displayName == bot.username()
-        let collectedItem = collected.id
-        bot.chat("Picked up a " + collectedItem)
+    bot.on("entityEquip", async (entity: Entity) => {
+        let isMe = entity.displayName == bot.username()
+        let collectedItem = bot.mineflayer().inventory.selectedItem
+        bot.chat("Picked up a " + collectedItem.displayName)
         // if (isMe && collectedItem.toLowerCase().includes("banner")) {
         //     await returnFlag();
         // }
