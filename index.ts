@@ -1,6 +1,7 @@
 import { RGBot } from "rg-bot";
 import {Entity, Item} from "minecraft-data";
 import {Vec3} from "vec3";
+import {Steamship} from '@steamship/client'
 
 const BLUE_SCORE = new Vec3(160, 63, -385)
 
@@ -48,6 +49,24 @@ export function configureBot(bot: RGBot) {
         else if (message == "score") {
             await returnFlag();
         }
+
+        if (username != bot.username()) {
+            let pkg = await Steamship.use(
+                "rg-ctf-trash-talker",
+                "rg-ctf-trash-talker",
+                undefined,
+                undefined,
+                true,
+                "rg-ctf-trash-talker"
+            )
+            // Invoke the method
+            let resp = await pkg.invoke(
+                "generate",
+                {phrase: message}
+            )
+            bot.chat(JSON.stringify(resp))
+        }
+
     })
 
 }
