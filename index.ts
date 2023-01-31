@@ -50,22 +50,23 @@ export function configureBot(bot: RGBot) {
             await returnFlag();
         }
 
-        if (username != bot.username()) {
-            let pkg = await Steamship.use(
-                "rg-ctf-trash-talker",
-                "rg-ctf-trash-talker",
-                undefined,
-                undefined,
-                true,
-                "rg-ctf-trash-talker"
-            )
-            // Invoke the method
-            let resp = await pkg.invoke(
-                "generate",
-                {phrase: message}
-            )
-            bot.chat(JSON.stringify(resp))
-        }
+        // if (username != bot.username()) {
+        //     fetch()
+        //     let pkg = await Steamship.use(
+        //         "rg-ctf-trash-talker",
+        //         "rg-ctf-trash-talker",
+        //         undefined,
+        //         undefined,
+        //         true,
+        //         "rg-ctf-trash-talker"
+        //     )
+        //     // Invoke the method
+        //     let resp = await pkg.invoke(
+        //         "generate",
+        //         {phrase: message}
+        //     )
+        //     bot.chat(JSON.stringify(resp))
+        // }
 
     })
 
