@@ -7,7 +7,7 @@ export default class RGCTFUtils {
 
     private bot: RGBot;
 
-    public FLAG_ITEM_NAME = "banner";
+    public FLAG_ITEM_NAME = "white_banner";
 
     constructor(bot: RGBot) {
         this.bot = bot;
