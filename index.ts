@@ -2,6 +2,8 @@ import { RGBot } from "rg-bot";
 import {Entity, Item} from "minecraft-data";
 import {Vec3} from "vec3";
 import {Steamship} from '@steamship/client'
+import RGCTFUtils from './rg-ctf-utils';
+import Commander from "./commander";
 
 const BLUE_SCORE = new Vec3(160, 63, -385)
 
@@ -13,61 +15,12 @@ export function configureBot(bot: RGBot) {
 
     bot.setDebug(true);
     bot.allowDigWhilePathing(false);
+    const ctfUtils = new RGCTFUtils(bot);
+    const commander = new Commander(bot);
 
-    // This is our main loop. The Bot will invoke this on spawn.
-    // goal: collect 100 Poppies
-    async function getFlag() {
-        let flag = bot.findBlock("white_banner", {maxDistance: 100})
-        if (flag) {
-            bot.chat("Going to get the flag!");
-            await bot.approachBlock(flag)
-        } else {
-            bot.chat("Did not find the flag")
-        }
-    }
-
-    async function returnFlag() {
-        bot.chat("Catch me if you can!")
-        await bot.approachBlock(bot.mineflayer().blockAt(BLUE_SCORE), {reach: 0.1})
-    }
-
-    // Have the Bot begin our main loop when it spawns into the game
-    bot.on('spawn', async () => {
-        bot.chat('Get ready to face your doom!');
-
-        // If I spawned with a banner, run!
-        if (bot.inventoryContainsItem("banner", {partialMatch: true})) {
-            await returnFlag();
-        }
-
-    });
-
-    bot.on('chat', async (username: string, message: string) => {
-        if (message == "get flag") {
-            await getFlag();
-        }
-        else if (message == "score") {
-            await returnFlag();
-        }
-
-        // if (username != bot.username()) {
-        //     fetch()
-        //     let pkg = await Steamship.use(
-        //         "rg-ctf-trash-talker",
-        //         "rg-ctf-trash-talker",
-        //         undefined,
-        //         undefined,
-        //         true,
-        //         "rg-ctf-trash-talker"
-        //     )
-        //     // Invoke the method
-        //     let resp = await pkg.invoke(
-        //         "generate",
-        //         {phrase: message}
-        //     )
-        //     bot.chat(JSON.stringify(resp))
-        // }
-
+    commander.register('flag', async () => {
+        const flagLocation = ctfUtils.getFlagLocation();
+        console.log("Flag location: " + JSON.stringify(flagLocation));
     })
 
 }
