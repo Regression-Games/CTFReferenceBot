@@ -23,4 +23,8 @@ export function configureBot(bot: RGBot) {
         console.log("Flag location: " + JSON.stringify(flagLocation));
     })
 
+    commander.register('get flag', async () => {
+        await ctfUtils.approachFlag();
+    })
+
 }
