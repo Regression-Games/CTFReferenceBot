@@ -16,6 +16,7 @@ export default class RGCTFUtils {
     }
 
     getMyTeam(): string {
+        console.log(this.bot.matchInfo())
         return this.bot.matchInfo().players.filter(player => player.username == this.bot.username())[0].team;
     }
 
