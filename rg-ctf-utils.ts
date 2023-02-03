@@ -23,13 +23,13 @@ export default class RGCTFUtils {
     /**
      * Gets the location of either the neutral flag OR a team's flag on the ground.
      */
-    getFlagLocation(): Vec3 {
-        let flagLocation = this.bot.findBlock(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false}).position;
-        if (!flagLocation) {
+    getFlagLocation(): Vec3 | null {
+        let flag = this.bot.findBlock(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false});
+        if (!flag) {
             // @ts-ignore
-            flagLocation = this.bot.findItemOnGround(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false}).position;
+            flag = this.bot.findItemOnGround(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false});
         }
-        return flagLocation;
+        return flag ? flag.position : null;
     }
 
     async approachFlag(): Promise<boolean> {
