@@ -30,4 +30,8 @@ export function configureBot(bot: RGBot) {
         console.log(entity)
     })
 
+    bot.on('playerCollect', (collector, collected) => {
+        console.log(collector, collected)
+    })
+
 }
