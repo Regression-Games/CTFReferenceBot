@@ -30,9 +30,7 @@ export function configureBot(bot: RGBot) {
     });
 
     commander.register('items', async () => {
-        let items = bot.findItemsOnGround({maxDistance: 100, maxCount: 100});
-        console.log(items.length);
-        console.log(items);
+        await bot.findAndCollectItemsOnGround({maxDistance: 250});
     })
 
     // Define a state machine that can take actions for us
