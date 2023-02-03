@@ -41,7 +41,7 @@ export function configureBot(bot: RGBot) {
 
     bot.on('playerCollect', (collector, collected) => {
         console.log(collector, collected)
-        const itemEntity = this.getItemDefinitionById(collected.metadata[8]?.itemId)
+        const itemEntity = bot.getItemDefinitionById(collected.metadata[8]?.itemId)
         const distance = bot.position().distanceTo(collected.position)
         const itemName = itemEntity.name
         console.log(["collected", itemEntity.count, itemName, distance])
