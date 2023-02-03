@@ -26,4 +26,8 @@ export function configureBot(bot: RGBot) {
         await ctfUtils.scoreFlag();
     });
 
+    bot.on('entitySpawn', (entity) => {
+        console.log(entity)
+    })
+
 }
