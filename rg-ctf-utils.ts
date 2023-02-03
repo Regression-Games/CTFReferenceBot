@@ -53,4 +53,8 @@ export default class RGCTFUtils {
         });
     }
 
+    hasFlag(): boolean {
+        return this.bot.inventoryContainsItem('banner', {partialMatch: true})
+    }
+
 }
