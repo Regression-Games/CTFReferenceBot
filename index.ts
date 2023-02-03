@@ -27,6 +27,7 @@ export function configureBot(bot: RGBot) {
     });
 
     bot.on('entitySpawn', (entity) => {
+        const itemEntity = bot.getItemDefinitionById(entity.metadata[8]?.itemId)
         console.log(entity)
     })
 
