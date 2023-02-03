@@ -44,7 +44,7 @@ export default class RGCTFUtils {
         let flag = this.bot.findBlock(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false});
         if (!flag) {
             // @ts-ignore
-            flag = this.bot.findItemOnGround(this.FLAG_DROP_NAME, {maxDistance: 100, partialMatch: false});
+            flag = this.bot.findItemOnGround(this.FLAG_DROP_NAME, {maxDistance: 100, partialMatch: true});
         }
         return flag ? flag.position : null;
     }
