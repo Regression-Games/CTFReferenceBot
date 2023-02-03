@@ -1,7 +1,6 @@
 import { RGBot } from "rg-bot";
 import RGCTFUtils from './rg-ctf-utils';
 import Commander from "./commander";
-import {Entity} from "minecraft-data";
 import StateMachine from "./state_machine";
 
 /**
@@ -14,6 +13,8 @@ export function configureBot(bot: RGBot) {
     bot.allowDigWhilePathing(false);
     const ctfUtils = new RGCTFUtils(bot);
     const commander = new Commander(bot);
+
+    let shouldStop = false;
 
     commander.register('flag', async () => {
         const flagLocation = ctfUtils.getFlagLocation();
@@ -37,6 +38,9 @@ export function configureBot(bot: RGBot) {
     // Define a state machine that can take actions for us
     const sm = new StateMachine();
     sm.setStateToEdges('has_no_flag', async (): Promise<string> => {
+        if (shouldStop) {
+            return "stop";
+        }
 
         // Check that we may have the flag... if we do, move to has flag
         if (ctfUtils.hasFlag()) {
@@ -65,6 +69,10 @@ export function configureBot(bot: RGBot) {
     })
 
     sm.setStateToEdges('has_flag', async (): Promise<string> => {
+        if (shouldStop) {
+            return "stop";
+        }
+
         // First, verify that we have a flag. If not, we have to go back to no flag
         if (!ctfUtils.hasFlag()) {
             bot.chat("Thought I had the flag, but I don't... going to go find it");
@@ -72,36 +80,24 @@ export function configureBot(bot: RGBot) {
         }
 
         // If we have the flag, let's go score it
+        bot.chat("Going to score the flag..")
         await ctfUtils.scoreFlag();
         bot.chat("Scored! Going back to not having a flag")
         return 'has_no_flag';
     })
 
     sm.setState("has_no_flag");
+    sm.setTerminalState("stop");
 
     commander.register('start', async () => {
         while (!sm.isTerminated()) {
             await sm.tick();
         }
+        console.log("Terminated state machine logic")
     })
 
-    bot.on('entitySpawn', (entity) => {
-        // if (entity.objectType === "Item" && entity.onGround && entity?.metadata?.length > 8) {
-        //     console.log("Item spawned on ground!")
-        //     const distance = bot.position().distanceTo(entity.position)
-        //     const itemEntity = this.getItemDefinitionById(entity.metadata[8]?.itemId)
-        //     const itemName = itemEntity.name
-        //     console.log([itemEntity.count, itemName, distance])
-        // } else {
-        //     console.log("Something spawned that was not on the ground")
-        // }
-    })
-
-    bot.on('playerCollect', (collector, collected) => {
-        // const itemEntity = bot.getItemDefinitionById(collected.metadata[8]?.itemId)
-        // const distance = bot.position().distanceTo(collected.position)
-        // const itemName = itemEntity.name
-        // console.log(["collected", itemEntity.count, itemName, distance])
+    commander.register('stop', async () => {
+        shouldStop = true;
     })
 
 }

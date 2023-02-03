@@ -16,8 +16,24 @@ export default class RGCTFUtils {
     }
 
     getMyTeam(): string {
-        console.log(this.bot.matchInfo())
+        if (!this.bot.matchInfo()) return null
         return this.bot.matchInfo().players.filter(player => player.username == this.bot.username())[0].team;
+    }
+
+    getTeammateUsernames(includeMyself: boolean): string[] {
+        if (!this.bot.matchInfo()) return null
+        const myTeam = this.getMyTeam();
+        return this.bot.matchInfo().players
+            .filter(player => player.team == myTeam && (includeMyself || player.username != this.bot.username()))
+            .map(player => player.username)
+    }
+
+    getEnemyUsernames(): string[] {
+        if (!this.bot.matchInfo()) return null
+        const myTeam = this.getMyTeam();
+        return this.bot.matchInfo().players
+            .filter(player => player.team != myTeam)
+            .map(player => player.username)
     }
 
     /**
@@ -42,6 +58,9 @@ export default class RGCTFUtils {
         });
     }
 
+    /**
+     * Scores the flag in your team's base.
+     */
     async scoreFlag(): Promise<boolean> {
         const myTeam = this.getMyTeam();
         console.log(myTeam)
@@ -55,6 +74,10 @@ export default class RGCTFUtils {
 
     hasFlag(): boolean {
         return this.bot.inventoryContainsItem('banner', {partialMatch: true})
+    }
+
+    async wait(): Promise<void> {
+
     }
 
 }
