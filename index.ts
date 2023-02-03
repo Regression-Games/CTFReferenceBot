@@ -89,6 +89,7 @@ export function configureBot(bot: RGBot) {
         }
         await bot.findAndCollectItemsOnGround({maxDistance: 50});
         bot.chat("Finished collecting items (todo: equip and use)")
+        await ctfUtils.wait(1000);
         return "has_no_flag";
     });
 

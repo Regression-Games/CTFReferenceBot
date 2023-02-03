@@ -76,8 +76,8 @@ export default class RGCTFUtils {
         return this.bot.inventoryContainsItem('banner', {partialMatch: true})
     }
 
-    async wait(): Promise<void> {
-
+    async wait(milliseconds: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
 }
