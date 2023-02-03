@@ -27,23 +27,28 @@ export function configureBot(bot: RGBot) {
         await ctfUtils.scoreFlag();
     });
 
+    commander.register('items', async () => {
+        let items = bot.findItemsOnGround();
+        console.log(items);
+    })
+
     bot.on('entitySpawn', (entity) => {
-        if (entity.objectType === "Item" && entity.onGround && entity?.metadata?.length > 8) {
-            console.log("Item spawned on ground!")
-            const distance = bot.position().distanceTo(entity.position)
-            const itemEntity = this.getItemDefinitionById(entity.metadata[8]?.itemId)
-            const itemName = itemEntity.name
-            console.log([itemEntity.count, itemName, distance])
-        } else {
-            console.log("Something spawned that was not on the ground")
-        }
+        // if (entity.objectType === "Item" && entity.onGround && entity?.metadata?.length > 8) {
+        //     console.log("Item spawned on ground!")
+        //     const distance = bot.position().distanceTo(entity.position)
+        //     const itemEntity = this.getItemDefinitionById(entity.metadata[8]?.itemId)
+        //     const itemName = itemEntity.name
+        //     console.log([itemEntity.count, itemName, distance])
+        // } else {
+        //     console.log("Something spawned that was not on the ground")
+        // }
     })
 
     bot.on('playerCollect', (collector, collected) => {
-        const itemEntity = bot.getItemDefinitionById(collected.metadata[8]?.itemId)
-        const distance = bot.position().distanceTo(collected.position)
-        const itemName = itemEntity.name
-        console.log(["collected", itemEntity.count, itemName, distance])
+        // const itemEntity = bot.getItemDefinitionById(collected.metadata[8]?.itemId)
+        // const distance = bot.position().distanceTo(collected.position)
+        // const itemName = itemEntity.name
+        // console.log(["collected", itemEntity.count, itemName, distance])
     })
 
 }
