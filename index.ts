@@ -37,6 +37,13 @@ export function configureBot(bot: RGBot) {
     // Define a state machine that can take actions for us
     const sm = new StateMachine();
     sm.setStateToEdges('has_no_flag', async (): Promise<string> => {
+
+        // Check that we may have the flag... if we do, move to has flag
+        if (ctfUtils.hasFlag()) {
+            bot.chat("Thought I did not have the flag, but I do... going to score it");
+            return 'has_flag';
+        }
+
         // When we have no flag, find the flag and go get it
         const flagLocation = ctfUtils.getFlagLocation();
         if (!flagLocation) {
