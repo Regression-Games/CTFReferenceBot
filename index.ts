@@ -30,7 +30,7 @@ export function configureBot(bot: RGBot) {
     });
 
     commander.register('items', async () => {
-        let items = bot.findItemsOnGround({maxDistance: 100});
+        let items = bot.findItemsOnGround({maxDistance: 100, maxCount: 100});
         console.log(items.length);
         console.log(items);
     })
@@ -93,7 +93,7 @@ export function configureBot(bot: RGBot) {
         while (!sm.isTerminated()) {
             await sm.tick();
         }
-        console.log("Terminated state machine logic")
+        bot.chat("Terminated state machine logic")
     })
 
     commander.register('stop', async () => {
