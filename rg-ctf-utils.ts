@@ -8,9 +8,15 @@ export default class RGCTFUtils {
     private bot: RGBot;
 
     public FLAG_ITEM_NAME = "white_banner";
+    public BLUE_SCORE_LOCATION = new Vec3(160, 63, -385)
+    public RED_SCORE_LOCATION = new Vec3(160, 63, -385);
 
     constructor(bot: RGBot) {
         this.bot = bot;
+    }
+
+    getMyTeam(): string {
+        return this.bot.matchInfo().players.filter(player => player.username == this.bot.username())[0].team;
     }
 
     /**
@@ -35,6 +41,15 @@ export default class RGCTFUtils {
         });
     }
 
-
+    async scoreFlag(): Promise<boolean> {
+        const myTeam = this.getMyTeam();
+        console.log(myTeam)
+        const scoreLocation = myTeam == "BLUE" ? this.RED_SCORE_LOCATION : this.BLUE_SCORE_LOCATION;
+        const goal = new GoalNear(scoreLocation.x, scoreLocation.y, scoreLocation.z, 0.1);
+        return await this.bot.handlePath(async () => {
+            // @ts-ignore
+            await this.bot.mineflayer().pathfinder.goto(goal);
+        });
+    }
 
 }

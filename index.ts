@@ -1,11 +1,6 @@
 import { RGBot } from "rg-bot";
-import {Entity, Item} from "minecraft-data";
-import {Vec3} from "vec3";
-import {Steamship} from '@steamship/client'
 import RGCTFUtils from './rg-ctf-utils';
 import Commander from "./commander";
-
-const BLUE_SCORE = new Vec3(160, 63, -385)
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -26,5 +21,9 @@ export function configureBot(bot: RGBot) {
     commander.register('get flag', async () => {
         await ctfUtils.approachFlag();
     })
+
+    commander.register('score', async () => {
+        await ctfUtils.scoreFlag();
+    });
 
 }
