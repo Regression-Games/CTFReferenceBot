@@ -49,9 +49,8 @@ export function configureBot(bot: RGBot) {
         // When we have no flag, find the flag and go get it
         const flagLocation = ctfUtils.getFlagLocation();
         if (!flagLocation) {
-            bot.chat("Could not find flag, going to wait a few more seconds...")
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            return 'has_no_flag'; // go back to this state
+            bot.chat("Could not find flag, going to look for items while I wait...")
+            return 'collect_items';
         }
 
         // When we have the flag, navigate towards it. This could be a whole other state, but
@@ -83,6 +82,15 @@ export function configureBot(bot: RGBot) {
         bot.chat("Scored! Going back to not having a flag")
         return 'has_no_flag';
     })
+
+    sm.setStateToEdges('collect_items', async (): Promise<string> => {
+        if (shouldStop) {
+            return "stop";
+        }
+        await bot.findAndCollectItemsOnGround({maxDistance: 50});
+        bot.chat("Finished collecting items (todo: equip and use)")
+        return "has_no_flag";
+    });
 
     sm.setState("has_no_flag");
     sm.setTerminalState("stop");
