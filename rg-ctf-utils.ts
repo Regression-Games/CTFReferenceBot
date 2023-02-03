@@ -8,6 +8,7 @@ export default class RGCTFUtils {
     private bot: RGBot;
 
     public FLAG_ITEM_NAME = "white_banner";
+    public FLAG_DROP_NAME = "banner";
     public BLUE_SCORE_LOCATION = new Vec3(160, 63, -385)
     public RED_SCORE_LOCATION = new Vec3(160, 63, -385);
 
@@ -43,7 +44,7 @@ export default class RGCTFUtils {
         let flag = this.bot.findBlock(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false});
         if (!flag) {
             // @ts-ignore
-            flag = this.bot.findItemOnGround(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false});
+            flag = this.bot.findItemOnGround(this.FLAG_DROP_NAME, {maxDistance: 100, partialMatch: false});
         }
         return flag ? flag.position : null;
     }

@@ -16,23 +16,6 @@ export function configureBot(bot: RGBot) {
 
     let shouldStop = false;
 
-    commander.register('flag', async () => {
-        const flagLocation = ctfUtils.getFlagLocation();
-        bot.chat("Flag location: " + JSON.stringify(flagLocation));
-    })
-
-    commander.register('get flag', async () => {
-        await ctfUtils.approachFlag();
-    })
-
-    commander.register('score', async () => {
-        await ctfUtils.scoreFlag();
-    });
-
-    commander.register('items', async () => {
-        await bot.findAndCollectItemsOnGround({maxDistance: 250});
-    })
-
     // Define a state machine that can take actions for us
     const sm = new StateMachine();
     sm.setStateToEdges('has_no_flag', async (): Promise<string> => {
