@@ -1,8 +1,13 @@
 import {Vec3} from "vec3";
 import {RGBot} from "rg-bot";
-const { GoalNear, GoalPlaceBlock, GoalLookAtBlock, GoalXZ, GoalInvert, GoalFollow } = require('mineflayer-pathfinder').goals
+const { GoalNear } = require('mineflayer-pathfinder').goals
 
-
+/**
+ * A collection of utilities for the Capture the Flag game mode
+ * Includes location of points of interest, simplified functions
+ * for gathering and scoring the flag, and utilities for finding
+ * both teammates and enemies.
+ */
 export default class RGCTFUtils {
 
     private bot: RGBot;
@@ -16,11 +21,20 @@ export default class RGCTFUtils {
         this.bot = bot;
     }
 
+    /**
+     * Returns the name of the team that this bot is on
+     * @return The name of the team that this bot is on
+     */
     getMyTeam(): string {
         if (!this.bot.matchInfo()) return null
         return this.bot.matchInfo().players.filter(player => player.username == this.bot.username())[0].team;
     }
 
+    /**
+     * Returns a list of all players on the same team as this bot.
+     * @param includeMyself if true, includes this bot in the list
+     * @return A list of all players on the same team as this bot.
+     */
     getTeammateUsernames(includeMyself: boolean): string[] {
         if (!this.bot.matchInfo()) return null
         const myTeam = this.getMyTeam();
@@ -29,6 +43,10 @@ export default class RGCTFUtils {
             .map(player => player.username)
     }
 
+    /**
+     * Returns a list of all players on the opposite team as this bot.
+     * @return A list of all players on the opposite team as this bot.
+     */
     getEnemyUsernames(): string[] {
         if (!this.bot.matchInfo()) return null
         const myTeam = this.getMyTeam();
@@ -39,6 +57,7 @@ export default class RGCTFUtils {
 
     /**
      * Gets the location of either the neutral flag OR a team's flag on the ground.
+     * @return The location of either the neutral flag OR a team's flag on the ground.
      */
     getFlagLocation(): Vec3 | null {
         let flag = this.bot.findBlock(this.FLAG_ITEM_NAME, {maxDistance: 100, partialMatch: false});
@@ -49,22 +68,28 @@ export default class RGCTFUtils {
         return flag ? flag.position : null;
     }
 
+    /**
+     * Commands the bot to move towards the flag location, if the flag exists.
+     * @return true if the bot reached the flag, false otherwise
+     */
     async approachFlag(): Promise<boolean> {
         const flagLocation = this.getFlagLocation();
-        // TODO: This should be a built-in function, as approachPosition
-        const goal = new GoalNear(flagLocation.x, flagLocation.y, flagLocation.z, 0.1);
-        return await this.bot.handlePath(async () => {
-            // @ts-ignore
-            await this.bot.mineflayer().pathfinder.goto(goal);
-        });
+        if (flagLocation) {
+            // TODO: This should be a built-in function, as approachPositione
+            const goal = new GoalNear(flagLocation.x, flagLocation.y, flagLocation.z, 0.1);
+            return await this.bot.handlePath(async () => {
+                // @ts-ignore
+                await this.bot.mineflayer().pathfinder.goto(goal);
+            });
+        }
     }
 
     /**
-     * Scores the flag in your team's base.
+     * Commands the bot to score the flag in your team's base.
+     * @return true if the bot reached the scoring zone, and false otherwise
      */
     async scoreFlag(): Promise<boolean> {
         const myTeam = this.getMyTeam();
-        console.log(myTeam)
         const scoreLocation = myTeam == "BLUE" ? this.RED_SCORE_LOCATION : this.BLUE_SCORE_LOCATION;
         const goal = new GoalNear(scoreLocation.x, scoreLocation.y, scoreLocation.z, 0.1);
         return await this.bot.handlePath(async () => {
@@ -73,10 +98,18 @@ export default class RGCTFUtils {
         });
     }
 
+    /**
+     * Returns true if this bot has the flag, and false otherwise.
+     */
     hasFlag(): boolean {
         return this.bot.inventoryContainsItem('banner', {partialMatch: true})
     }
 
+    /**
+     * Commands the bot to just wait for a certain amount of time
+     * @param milliseconds The amount of time to wait, in milliseconds
+     * @return true if the bot waited the full amount of time, and false otherwise
+     */
     async wait(milliseconds: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
