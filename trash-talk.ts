@@ -1,6 +1,6 @@
 //import fetch from 'node-fetch';
 import axios from "axios";
-export async function generateTrashTalk(phrase: string): Promise<string> {
+export async function generateTrashTalk(phrase: string): Promise<string | null> {
 
     try {
         const resp = await axios.post(
@@ -13,11 +13,11 @@ export async function generateTrashTalk(phrase: string): Promise<string> {
                 }
             }
         )
-        return JSON.stringify(resp.data);
+        return resp.data;
     } catch (e) {
         console.log(e)
-        return `Failed with: ${JSON.stringify(e)}`
     }
 
+    return null;
 
 }

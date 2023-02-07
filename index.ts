@@ -92,11 +92,13 @@ export function configureBot(bot: RGBot) {
     })
 
     bot.on('chat', async (username: string, message: string) => {
+        const enemyNames = ["DijkstrasPath"] // ctfUtils.getEnemyUsernames()
         if (username == bot.username()) return;
-        bot.chat(message)
-        if (message.startsWith("generate")) {
+        if (enemyNames.includes(username)) {
             const trashTalk = await generateTrashTalk(message);
-            bot.chat(trashTalk)
+            if (trashTalk) {
+                bot.chat(trashTalk)
+            }
         }
     })
 
