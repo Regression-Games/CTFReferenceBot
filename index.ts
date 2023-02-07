@@ -91,6 +91,12 @@ export function configureBot(bot: RGBot) {
         shouldStop = true;
     })
 
+    bot.on('message', async (jsonMsg, position, sender, verified) => {
+        console.log(jsonMsg)
+        console.log(position)
+        console.log(sender)
+    })
+
     bot.on('chat', async (username: string, message: string) => {
         const enemyNames = ["DijkstrasPath"] // ctfUtils.getEnemyUsernames()
         if (username == bot.username()) return;
