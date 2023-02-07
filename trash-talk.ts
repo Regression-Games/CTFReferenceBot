@@ -1,11 +1,10 @@
 //import fetch from 'node-fetch';
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+import axios from "axios";
 export async function generateTrashTalk(phrase: string): Promise<string> {
 
-    const resp = await fetch(
+    const resp = await axios.post(
         'https://vontell.steamship.run/rg-ctf-trash-talker/rg-ctf-trash-talker/generate',
         {
-            method: 'POST',
             body: JSON.stringify({phrase}),
             headers: {
                 'Content-Type': 'application/json',
@@ -14,6 +13,6 @@ export async function generateTrashTalk(phrase: string): Promise<string> {
         }
     )
 
-    return JSON.stringify(resp.body);
+    return JSON.stringify(resp.data);
 
 }
