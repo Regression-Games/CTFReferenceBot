@@ -15,6 +15,7 @@ export async function generateTrashTalk(phrase: string): Promise<string> {
         )
         return JSON.stringify(resp.data);
     } catch (e) {
+        console.log(e)
         return `Failed with: ${JSON.stringify(e)}`
     }
 
