@@ -2,6 +2,7 @@ import { RGBot } from "rg-bot";
 import RGCTFUtils from './rg-ctf-utils';
 import Commander from "./commander";
 import StateMachine from "./state_machine";
+import {generateTrashTalk} from "./trash-talk";
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -88,6 +89,15 @@ export function configureBot(bot: RGBot) {
 
     commander.register('stop', async () => {
         shouldStop = true;
+    })
+
+    bot.on('chat', async (username: string, message: string) => {
+        if (username == bot.username()) return;
+        bot.chat(message)
+        if (message.startsWith("generate")) {
+            const trashTalk = await generateTrashTalk(message);
+            bot.chat(trashTalk)
+        }
     })
 
 }
