@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+//import fetch from 'node-fetch';
+const fetch = (await import('node-fetch')).default;
 
 export async function generateTrashTalk(phrase: string): Promise<string> {
 
