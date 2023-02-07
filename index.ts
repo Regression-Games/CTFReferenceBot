@@ -92,9 +92,16 @@ export function configureBot(bot: RGBot) {
     })
 
     bot.on('message', async (jsonMsg, position, sender, verified) => {
-        console.log(jsonMsg)
-        console.log(position)
-        console.log(sender)
+        const enemyNames = ["DijkstrasPath"] // ctfUtils.getEnemyUsernames()
+        if (position == "system") {
+            const message = jsonMsg.extra[0]['text'];
+            if (message.includes("flag") && enemyNames.includes(message.split(" ")[0])) {
+                const trashTalk = await generateTrashTalk(message);
+                if (trashTalk) {
+                    bot.chat(trashTalk)
+                }
+            }
+        }
     })
 
     bot.on('chat', async (username: string, message: string) => {
