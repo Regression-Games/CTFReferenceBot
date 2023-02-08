@@ -22,40 +22,6 @@ export default class RGCTFUtils {
     }
 
     /**
-     * Returns the name of the team that this bot is on
-     * @return The name of the team that this bot is on
-     */
-    getMyTeam(): string {
-        if (!this.bot.matchInfo()) return null
-        return this.bot.matchInfo().players.filter(player => player.username == this.bot.username())[0].team;
-    }
-
-    /**
-     * Returns a list of all players on the same team as this bot.
-     * @param includeMyself if true, includes this bot in the list
-     * @return A list of all players on the same team as this bot.
-     */
-    getTeammateUsernames(includeMyself: boolean): string[] {
-        if (!this.bot.matchInfo()) return null
-        const myTeam = this.getMyTeam();
-        return this.bot.matchInfo().players
-            .filter(player => player.team == myTeam && (includeMyself || player.username != this.bot.username()))
-            .map(player => player.username)
-    }
-
-    /**
-     * Returns a list of all players on the opposite team as this bot.
-     * @return A list of all players on the opposite team as this bot.
-     */
-    getEnemyUsernames(): string[] {
-        if (!this.bot.matchInfo()) return null
-        const myTeam = this.getMyTeam();
-        return this.bot.matchInfo().players
-            .filter(player => player.team != myTeam)
-            .map(player => player.username)
-    }
-
-    /**
      * Gets the location of either the neutral flag OR a team's flag on the ground.
      * @return The location of either the neutral flag OR a team's flag on the ground.
      */
@@ -84,7 +50,7 @@ export default class RGCTFUtils {
      * @return true if the bot reached the scoring zone, and false otherwise
      */
     async scoreFlag(): Promise<boolean> {
-        const myTeam = this.getMyTeam();
+        const myTeam = this.bot.myTeam();
         const scoreLocation = myTeam == "BLUE" ? this.RED_SCORE_LOCATION : this.BLUE_SCORE_LOCATION;
         const goal = new GoalNear(scoreLocation.x, scoreLocation.y, scoreLocation.z, 0.1);
         return await this.bot.handlePath(async () => {
@@ -98,15 +64,6 @@ export default class RGCTFUtils {
      */
     hasFlag(): boolean {
         return this.bot.inventoryContainsItem('banner', {partialMatch: true})
-    }
-
-    /**
-     * Commands the bot to just wait for a certain amount of time
-     * @param milliseconds The amount of time to wait, in milliseconds
-     * @return true if the bot waited the full amount of time, and false otherwise
-     */
-    async wait(milliseconds: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
 }

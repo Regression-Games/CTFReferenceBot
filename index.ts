@@ -73,7 +73,7 @@ export function configureBot(bot: RGBot) {
         }
         await bot.findAndCollectItemsOnGround({maxDistance: 50});
         bot.chat("Finished collecting items (todo: equip and use)")
-        await ctfUtils.wait(1000);
+        await bot.waitForMilliseconds(1000);
         return "has_no_flag";
     });
 
@@ -89,6 +89,15 @@ export function configureBot(bot: RGBot) {
 
     commander.register('stop', async () => {
         shouldStop = true;
+    })
+
+    commander.register('teams', async () => {
+        bot.chat("My Team: " + JSON.stringify(bot.myTeam()));
+        await bot.waitForMilliseconds(1000);
+        bot.chat("My Teammates: " + JSON.stringify(bot.getTeammateUsernames(false)));
+        await bot.waitForMilliseconds(1000);
+        bot.chat("Enemy Team: " + JSON.stringify(bot.getEnemyUsernames()));
+        await bot.waitForMilliseconds(1000);
     })
 
     bot.on('message', async (jsonMsg, position, sender, verified) => {
