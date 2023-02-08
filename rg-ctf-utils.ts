@@ -75,12 +75,7 @@ export default class RGCTFUtils {
     async approachFlag(): Promise<boolean> {
         const flagLocation = this.getFlagLocation();
         if (flagLocation) {
-            // TODO: This should be a built-in function, as approachPositione
-            const goal = new GoalNear(flagLocation.x, flagLocation.y, flagLocation.z, 0.1);
-            return await this.bot.handlePath(async () => {
-                // @ts-ignore
-                await this.bot.mineflayer().pathfinder.goto(goal);
-            });
+            return await this.bot.approachPosition(flagLocation, {reach: 0.1});
         }
     }
 
