@@ -84,6 +84,7 @@ export default class RGCTFUtils {
             matchInfo?.teams.forEach(team => {
                 const newCaptures = team.metadata.flagCaptures;
                 const oldCaptures = this.lastMatchInfo?.teams.find(t => t.name == team.name)?.metadata.flagCaptures ?? 0;
+                this.lastMatchInfo = matchInfo;
                 if (newCaptures !== oldCaptures) {
                     this.eventEmitter.emit('flagScored', team.name);
                 }

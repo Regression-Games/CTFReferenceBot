@@ -141,4 +141,27 @@ export function configureBot(bot: RGBot) {
         console.log("--------------------------------")
     })
 
+    ctfUtils.on('flagAvailable', (flag: Item) => {
+        // @ts-ignore
+        console.log("CTF EVENT - flagAvailable -------")
+        console.log(flag)
+        console.log("--------------------------------")
+    })
+
+    ctfUtils.on('itemDetected', (item: Item) => {
+        // @ts-ignore
+        console.log("CTF EVENT - itemDetected -------")
+        console.log(item)
+        console.log("--------------------------------")
+    })
+
+    ctfUtils.on('itemCollected', (collector: Entity, item: Item) => {
+        // @ts-ignore
+        console.log("CTF EVENT - itemCollected -------")
+        // @ts-ignore
+        console.log(collector.username)
+        console.log(item)
+        console.log("--------------------------------")
+    })
+
 }
