@@ -125,8 +125,10 @@ export function configureBot(bot: RGBot) {
     })
 
     bot.on('playerCollect', (collector, collected) => {
+        console.log("COLLECTED ---------")
         console.log(collector)
         console.log(collected)
+        console.log("-------------------")
     })
 
 }
