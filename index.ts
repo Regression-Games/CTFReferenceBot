@@ -1,10 +1,9 @@
 import { RGBot } from "rg-bot";
-import RGCTFUtils from './rg-ctf-utils';
 import Commander from "./commander";
 import StateMachine from "./state_machine";
 import {generateTrashTalk} from "./trash-talk";
 import {Entity, Item} from "minecraft-data";
-import EventEmitter = require("events");
+import RGCTFUtils from 'rg-ctf-utils';
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
