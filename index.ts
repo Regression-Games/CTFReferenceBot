@@ -3,6 +3,7 @@ import RGCTFUtils from './rg-ctf-utils';
 import Commander from "./commander";
 import StateMachine from "./state_machine";
 import {generateTrashTalk} from "./trash-talk";
+import {Entity} from "minecraft-data";
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -124,10 +125,11 @@ export function configureBot(bot: RGBot) {
         }
     })
 
-    bot.on('playerCollect', (collector, collected) => {
+    bot.on('playerCollect', (collector: Entity, collected: Entity) => {
         console.log("COLLECTED ---------")
-        console.log(collector)
-        console.log(collected)
+        // @ts-ignore
+        console.log(collector.username)
+        console.log(bot.getItemDefinitionById(collected.id))
         console.log("-------------------")
     })
 
