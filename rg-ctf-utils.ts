@@ -81,6 +81,7 @@ export default class RGCTFUtils {
          * When the score is updated, detect if the flag was scored via flag captures change
          */
         bot.on('score_update', (matchInfo: RGMatchInfo) => {
+            console.log(matchInfo)
             matchInfo?.teams.forEach(team => {
                 const newCaptures = team.metadata.flagCaptures;
                 const oldCaptures = this.lastMatchInfo?.teams.find(t => t.name == team.name)?.metadata.flagCaptures ?? 0;
