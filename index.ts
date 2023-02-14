@@ -3,7 +3,8 @@ import RGCTFUtils from './rg-ctf-utils';
 import Commander from "./commander";
 import StateMachine from "./state_machine";
 import {generateTrashTalk} from "./trash-talk";
-import {Entity} from "minecraft-data";
+import {Entity, Item} from "minecraft-data";
+import EventEmitter = require("events");
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -13,6 +14,7 @@ export function configureBot(bot: RGBot) {
 
     bot.setDebug(true);
     bot.allowDigWhilePathing(false);
+    const ctfEvents = new CTFEvents();
     const ctfUtils = new RGCTFUtils(bot);
     const commander = new Commander(bot);
 
@@ -128,10 +130,21 @@ export function configureBot(bot: RGBot) {
     bot.on('playerCollect', (collector: Entity, collected: Entity) => {
         console.log("COLLECTED ---------")
         // @ts-ignore
-        console.log(collector.username)
-        // @ts-ignore
-        console.log(bot.getItemDefinitionById(collected.metadata[8].itemId))
-        console.log("-------------------")
+        const item = bot.getItemDefinitionById(collected.metadata[8].itemId)
+        if (item.name.includes("banner")) {
+            ctfEvents.emit('flagPickedUp', collector, item);
+        }
     })
 
+    ctfEvents.on('flagPickedUp', (playerEntity: Entity, flag: Item) => {
+        console.log(playerEntity.username)
+        console.log(flag)
+    })
+
+}
+
+class CTFEvents extends EventEmitter {
+    constructor() {
+        super();
+    }
 }
