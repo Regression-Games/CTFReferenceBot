@@ -96,7 +96,7 @@ export function configureBot(bot: RGBot) {
         await bot.waitForMilliseconds(1000);
         bot.chat("My Teammates: " + JSON.stringify(bot.getTeammateUsernames(true)));
         await bot.waitForMilliseconds(1000);
-        bot.chat("Enemy Team: " + JSON.stringify(bot.getEnemyUsernames()));
+        bot.chat("Enemy Team: " + JSON.stringify(bot.getOpponentUsernames()));
         await bot.waitForMilliseconds(1000);
     })
 
