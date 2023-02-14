@@ -50,7 +50,7 @@ export default class RGCTFUtils {
      * @return true if the bot reached the scoring zone, and false otherwise
      */
     async scoreFlag(): Promise<boolean> {
-        const myTeam = this.bot.myTeam();
+        const myTeam = this.bot.getMyTeam();
         const scoreLocation = myTeam == "BLUE" ? this.RED_SCORE_LOCATION : this.BLUE_SCORE_LOCATION;
         const goal = new GoalNear(scoreLocation.x, scoreLocation.y, scoreLocation.z, 0.1);
         return await this.bot.handlePath(async () => {
