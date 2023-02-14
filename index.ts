@@ -14,7 +14,6 @@ export function configureBot(bot: RGBot) {
 
     bot.setDebug(true);
     bot.allowDigWhilePathing(false);
-    const ctfEvents = new CTFEvents();
     const ctfUtils = new RGCTFUtils(bot);
     const commander = new Commander(bot);
 
@@ -50,7 +49,7 @@ export function configureBot(bot: RGBot) {
         bot.chat("Has flag: " + ctfUtils.hasFlag());
 
         return ctfUtils.hasFlag() ? "has_flag" : "has_no_flag";
-    })
+    });
 
     sm.setStateToEdges('has_flag', async (): Promise<string> => {
         if (shouldStop) {
@@ -68,7 +67,7 @@ export function configureBot(bot: RGBot) {
         await ctfUtils.scoreFlag();
         bot.chat("Scored! Going back to not having a flag")
         return 'has_no_flag';
-    })
+    });
 
     sm.setStateToEdges('collect_items', async (): Promise<string> => {
         if (shouldStop) {
@@ -88,11 +87,11 @@ export function configureBot(bot: RGBot) {
             await sm.tick();
         }
         bot.chat("Terminated state machine logic")
-    })
+    });
 
     commander.register('stop', async () => {
         shouldStop = true;
-    })
+    });
 
     commander.register('teams', async () => {
         bot.chat("My Team: " + JSON.stringify(bot.getMyTeam()));
@@ -101,7 +100,7 @@ export function configureBot(bot: RGBot) {
         await bot.waitForMilliseconds(1000);
         bot.chat("Enemy Team: " + JSON.stringify(bot.getOpponentUsernames()));
         await bot.waitForMilliseconds(1000);
-    })
+    });
 
     bot.on('message', async (jsonMsg, position, sender, verified) => {
         const enemyNames = ["DijkstrasPath"] // ctfUtils.getEnemyUsernames()
@@ -114,7 +113,7 @@ export function configureBot(bot: RGBot) {
                 }
             }
         }
-    })
+    });
 
     bot.on('chat', async (username: string, message: string) => {
         const enemyNames = ["DijkstrasPath"] // ctfUtils.getEnemyUsernames()
@@ -125,27 +124,21 @@ export function configureBot(bot: RGBot) {
                 bot.chat(trashTalk)
             }
         }
-    })
+    });
 
-    bot.on('playerCollect', (collector: Entity, collected: Entity) => {
-        console.log("COLLECTED ---------")
-        // @ts-ignore
-        const item = bot.getItemDefinitionById(collected.metadata[8].itemId)
-        if (item.name.includes("banner")) {
-            ctfEvents.emit('flagPickedUp', collector, item);
-        }
-    })
-
-    ctfEvents.on('flagPickedUp', (playerEntity: Entity, flag: Item) => {
+    ctfUtils.on('flagObtained', (playerEntity: Entity, flag: Item) => {
+        console.log("CTF EVENT - flagObtained -------")
         // @ts-ignore
         console.log(playerEntity.username)
         console.log(flag)
+        console.log("--------------------------------")
+    });
+
+    ctfUtils.on('flagScored', (team: string) => {
+        // @ts-ignore
+        console.log("CTF EVENT - flagScored -------")
+        console.log(team)
+        console.log("--------------------------------")
     })
 
-}
-
-class CTFEvents extends EventEmitter {
-    constructor() {
-        super();
-    }
 }
