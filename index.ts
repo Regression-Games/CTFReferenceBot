@@ -129,7 +129,8 @@ export function configureBot(bot: RGBot) {
         console.log("COLLECTED ---------")
         // @ts-ignore
         console.log(collector.username)
-        console.log(bot.getItemDefinitionById(collected.id))
+        // @ts-ignore
+        console.log(bot.getItemDefinitionById(collected.metadata.id))
         console.log("-------------------")
     })
 
