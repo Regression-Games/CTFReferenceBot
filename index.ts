@@ -137,6 +137,7 @@ export function configureBot(bot: RGBot) {
     })
 
     ctfEvents.on('flagPickedUp', (playerEntity: Entity, flag: Item) => {
+        // @ts-ignore
         console.log(playerEntity.username)
         console.log(flag)
     })
