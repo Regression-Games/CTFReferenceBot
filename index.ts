@@ -5,6 +5,7 @@ import {generateTrashTalk} from "./trash-talk";
 import {Entity, Item} from "minecraft-data";
 import RGCTFUtils from 'rg-ctf-utils';
 import {Vec3} from "vec3";
+import {RGMatchInfo} from "rg-match-info";
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -169,6 +170,12 @@ export function configureBot(bot: RGBot) {
         console.log(collector.username)
         console.log(item)
         console.log("--------------------------------")
+    })
+
+    bot.on('score_update', (matchInfo: RGMatchInfo) => {
+        matchInfo?.players.forEach(p => {
+            console.log(p.username + JSON.stringify(p.metadata))
+        })
     })
 
 }
