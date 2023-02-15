@@ -1,11 +1,10 @@
 import { RGBot } from "rg-bot";
 import Commander from "./commander";
-import StateMachine from "./state_machine";
 import {generateTrashTalk} from "./trash-talk";
-import {Entity, Item} from "minecraft-data";
+import {Entity} from "prismarine-entity";
+import {Item} from "prismarine-item";
 import RGCTFUtils from 'rg-ctf-utils';
 import {Vec3} from "vec3";
-import {RGMatchInfo} from "rg-match-info";
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -19,97 +18,9 @@ export function configureBot(bot: RGBot) {
     ctfUtils.debug = true;
     const commander = new Commander(bot);
 
-    let shouldStop = false;
-
-    // Define a state machine that can take actions for us
-    const sm = new StateMachine();
-    sm.setStateToEdges('has_no_flag', async (): Promise<string> => {
-        if (shouldStop) {
-            return "stop";
-        }
-
-        // Check that we may have the flag... if we do, move to has flag
-        if (ctfUtils.hasFlag()) {
-            bot.chat("Thought I did not have the flag, but I do... going to score it");
-            return 'has_flag';
-        }
-
-        // When we have no flag, find the flag and go get it
-        const flagLocation = ctfUtils.getFlagLocation();
-        if (!flagLocation) {
-            bot.chat("Could not find flag, going to look for items while I wait...")
-            return 'collect_items';
-        }
-
-        // When we have the flag, navigate towards it. This could be a whole other state, but
-        // we implement it as a transition.
-        bot.chat("Found the flag, moving towards it...");
+    commander.register("start", async () => {
         await ctfUtils.approachFlag();
-
-        // Once we get there, let's actually check that we have the flag. If we don't we need to try again
-        // (this could mean someone else picked it up)
-        bot.chat("Has flag: " + ctfUtils.hasFlag());
-
-        return ctfUtils.hasFlag() ? "has_flag" : "has_no_flag";
-    });
-
-    sm.setStateToEdges('has_flag', async (): Promise<string> => {
-        if (shouldStop) {
-            return "stop";
-        }
-
-        // First, verify that we have a flag. If not, we have to go back to no flag
-        if (!ctfUtils.hasFlag()) {
-            bot.chat("Thought I had the flag, but I don't... going to go find it");
-            return 'has_no_flag';
-        }
-
-        // If we have the flag, let's go score it
-        bot.chat("Going to score the flag..")
-        await ctfUtils.scoreFlag();
-        bot.chat("Scored! Going back to not having a flag")
-        return 'has_no_flag';
-    });
-
-    sm.setStateToEdges('collect_items', async (): Promise<string> => {
-        if (shouldStop) {
-            return "stop";
-        }
-        await bot.findAndCollectItemsOnGround({maxDistance: 50});
-        bot.chat("Finished collecting items (todo: equip and use)")
-        await bot.waitForMilliseconds(1000);
-        return "has_no_flag";
-    });
-
-    sm.setState("has_no_flag");
-    sm.setTerminalState("stop");
-
-    commander.register('start', async () => {
-        while (!sm.isTerminated()) {
-            await sm.tick();
-        }
-        bot.chat("Terminated state machine logic")
-    });
-
-    commander.register('stop', async () => {
-        shouldStop = true;
-    });
-
-    commander.register('goto flag', async () => {
-        const flagLocation = ctfUtils.getFlagLocation();
-        if (flagLocation) {
-            return await bot.approachPosition(flagLocation, {reach: 5});
-        }
     })
-
-    commander.register('teams', async () => {
-        bot.chat("My Team: " + JSON.stringify(bot.getMyTeam()));
-        await bot.waitForMilliseconds(1000);
-        bot.chat("My Teammates: " + JSON.stringify(bot.getTeammateUsernames(true)));
-        await bot.waitForMilliseconds(1000);
-        bot.chat("Enemy Team: " + JSON.stringify(bot.getOpponentUsernames()));
-        await bot.waitForMilliseconds(1000);
-    });
 
     bot.on('message', async (jsonMsg, position, sender, verified) => {
         const enemyNames = ["DijkstrasPath"] // ctfUtils.getEnemyUsernames()
@@ -135,47 +46,29 @@ export function configureBot(bot: RGBot) {
         }
     });
 
-    ctfUtils.on('flagObtained', (playerUsername: string) => {
-        console.log("CTF EVENT - flagObtained -------")
-        // @ts-ignore
-        console.log(playerUsername)
-        console.log("--------------------------------")
+    ctfUtils.on('flagObtained', async (playerUsername: string) => {
+        // If I was the one to obtain the flag, go and score!
+        await ctfUtils.scoreFlag();
     });
 
-    ctfUtils.on('flagScored', (team: string) => {
-        // @ts-ignore
-        console.log("CTF EVENT - flagScored -------")
-        console.log(team)
-        console.log("--------------------------------")
+    ctfUtils.on('flagScored', async (team: string) => {
+        // After scoring, collect items until the flag comes back
+        bot.chat("Flag scored, waiting until it respawns")
+        // await bot.findAndCollectItemsOnGround({maxDistance: 50});
+        // await bot.waitForMilliseconds(1000);
     })
 
-    ctfUtils.on('flagAvailable', (position: Vec3) => {
-        // @ts-ignore
-        console.log("CTF EVENT - flagAvailable -------")
-        console.log(position)
-        console.log("--------------------------------")
+    ctfUtils.on('flagAvailable', async (position: Vec3) => {
+        bot.chat("Flag is available, going to get it once I'm done with my current task")
+        await ctfUtils.approachFlag();
     })
 
     ctfUtils.on('itemDetected', (item: Item) => {
-        // @ts-ignore
-        console.log("CTF EVENT - itemDetected -------")
-        console.log(item)
-        console.log("--------------------------------")
+        bot.chat(`I see that a ${item.name} has spawned`)
     })
 
     ctfUtils.on('itemCollected', (collector: Entity, item: Item) => {
-        // @ts-ignore
-        console.log("CTF EVENT - itemCollected -------")
-        // @ts-ignore
-        console.log(collector.username)
-        console.log(item)
-        console.log("--------------------------------")
-    })
-
-    bot.on('score_update', (matchInfo: RGMatchInfo) => {
-        matchInfo?.players.forEach(p => {
-            console.log(p.username + JSON.stringify(p.metadata))
-        })
+        bot.chat(`I see that ${collector.username} picked up ${item.name}`)
     })
 
 }
