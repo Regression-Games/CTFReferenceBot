@@ -4,6 +4,7 @@ import StateMachine from "./state_machine";
 import {generateTrashTalk} from "./trash-talk";
 import {Entity, Item} from "minecraft-data";
 import RGCTFUtils from 'rg-ctf-utils';
+import {Vec3} from "vec3";
 
 /**
  * This strategy is the simplest example of how to get started with the rg-bot package.
@@ -133,11 +134,10 @@ export function configureBot(bot: RGBot) {
         }
     });
 
-    ctfUtils.on('flagObtained', (playerEntity: Entity, flag: Item) => {
+    ctfUtils.on('flagObtained', (playerUsername: string) => {
         console.log("CTF EVENT - flagObtained -------")
         // @ts-ignore
-        console.log(playerEntity.username)
-        console.log(flag)
+        console.log(playerUsername)
         console.log("--------------------------------")
     });
 
@@ -148,10 +148,10 @@ export function configureBot(bot: RGBot) {
         console.log("--------------------------------")
     })
 
-    ctfUtils.on('flagAvailable', (flag: Item) => {
+    ctfUtils.on('flagAvailable', (position: Vec3) => {
         // @ts-ignore
         console.log("CTF EVENT - flagAvailable -------")
-        console.log(flag)
+        console.log(position)
         console.log("--------------------------------")
     })
 
