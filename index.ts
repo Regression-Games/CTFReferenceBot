@@ -93,6 +93,13 @@ export function configureBot(bot: RGBot) {
         shouldStop = true;
     });
 
+    commander.register('goto flag', async () => {
+        const flagLocation = ctfUtils.getFlagLocation();
+        if (flagLocation) {
+            return await bot.approachPosition(flagLocation, {reach: 5});
+        }
+    })
+
     commander.register('teams', async () => {
         bot.chat("My Team: " + JSON.stringify(bot.getMyTeam()));
         await bot.waitForMilliseconds(1000);
