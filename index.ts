@@ -14,6 +14,7 @@ export function configureBot(bot: RGBot) {
     bot.setDebug(true);
     bot.allowDigWhilePathing(false);
     const ctfUtils = new RGCTFUtils(bot);
+    ctfUtils.debug = true;
     const commander = new Commander(bot);
 
     let shouldStop = false;
