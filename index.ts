@@ -18,6 +18,7 @@ export function configureBot(bot: RGBot) {
     bot.on('chat', async (username, message) => {
         if (username === bot.username) return;
         if (message === 'start') {
+            bot.chat("Going to start capturing the flag!")
             await ctfUtils.approachFlag()
         }
     })
