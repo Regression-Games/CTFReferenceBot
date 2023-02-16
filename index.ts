@@ -48,7 +48,9 @@ export function configureBot(bot: RGBot) {
 
     ctfUtils.on('flagObtained', async (playerUsername: string) => {
         // If I was the one to obtain the flag, go and score!
-        await ctfUtils.scoreFlag();
+        if (playerUsername == bot.username()) {
+            await ctfUtils.scoreFlag();
+        }
     });
 
     ctfUtils.on('flagScored', async (team: string) => {
@@ -59,7 +61,7 @@ export function configureBot(bot: RGBot) {
     })
 
     ctfUtils.on('flagAvailable', async (position: Vec3) => {
-        bot.chat("Flag is available, going to get it once I'm done with my current task")
+        bot.chat("Flag is available, going to get it")
         await ctfUtils.approachFlag();
     })
 
