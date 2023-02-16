@@ -15,6 +15,13 @@ export function configureBot(bot: RGBot) {
     const ctfUtils = new RGCTFUtils(bot);
     ctfUtils.debug = false;
 
+    bot.on('chat', async (username, message) => {
+        if (username === bot.username) return;
+        if (message === 'start') {
+            await ctfUtils.approachFlag()
+        }
+    })
+
     ctfUtils.on('flagObtained', async (playerUsername: string) => {
         // If I was the one to obtain the flag, go and score!
         if (playerUsername == bot.username()) {
