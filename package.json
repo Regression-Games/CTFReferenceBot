@@ -1,7 +1,7 @@
 {
-  "name": "bot-template",
+  "name": "rg-ctf-reference-bot",
   "version": "1.0.0",
-  "description": "A simple example for getting started with the rg-bot package with typescript.",
+  "description": "A simple start bot for the capture the flag game mode on Regression Games",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
