@@ -1,5 +1,4 @@
 import { RGBot } from "rg-bot";
-import {Entity} from "prismarine-entity";
 import {Item} from "prismarine-item";
 import RGCTFUtils, {CTFEvent} from 'rg-ctf-utils';
 import {Vec3} from "vec3";
@@ -10,10 +9,8 @@ import {Vec3} from "vec3";
  */
 export function configureBot(bot: RGBot) {
 
-    bot.setDebug(true);
     bot.allowDigWhilePathing(false);
     const rgctfUtils = new RGCTFUtils(bot);
-    rgctfUtils.setDebug(false);
 
     bot.on('chat', async (username, message) => {
         if (username === bot.username) return;
@@ -38,14 +35,6 @@ export function configureBot(bot: RGBot) {
     bot.on(CTFEvent.FLAG_AVAILABLE, async (position: Vec3) => {
         bot.chat("Flag is available, going to get it")
         await rgctfUtils.approachFlag();
-    })
-
-    bot.on(CTFEvent.ITEM_DETECTED, (item: Item, entity: Entity) => {
-        bot.chat(`I see that a ${item.name} has spawned`)
-    })
-
-    bot.on(CTFEvent.ITEM_COLLECTED, (collector: Entity, item: Item) => {
-        bot.chat(`I see that ${collector.username} picked up ${item?.name}`)
     })
 
 }
