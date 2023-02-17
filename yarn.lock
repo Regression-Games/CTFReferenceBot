@@ -57,9 +57,9 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@>=10.0.0", "@types/node@^18.0.6":
-  version "18.13.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.13.0.tgz#0400d1e6ce87e9d3032c19eb6c58205b0d3f7850"
-  integrity sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==
+  version "18.14.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.14.0.tgz#94c47b9217bbac49d4a67a967fdcdeed89ebb7d0"
+  integrity sha512-5EWrvLmglK+imbCJY0+INViFWUHg1AHel1sq4ZVSfdcNqGy9Edv3UB9IIzzg+xPaUcAgZYcfVs2fBcwDeZzU0A==
 
 "@types/readable-stream@^2.3.13":
   version "2.3.15"
@@ -560,9 +560,9 @@ ipaddr.js@1.9.1:
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
 jose@^4.1.4:
-  version "4.11.4"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-4.11.4.tgz#e04d4a393ac017d0450fa0a38e2f2382cd73f71e"
-  integrity sha512-94FdcR8felat4vaTJyL/WVdtlWLlsnLMZP8v+A0Vru18K3bQ22vn7TtpVh3JlgBFNIlYOUlGqwp/MjRPOnIyCQ==
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.12.0.tgz#7f00cd2f82499b91623cd413b7b5287fd52651ed"
+  integrity sha512-wW1u3cK81b+SFcHjGC8zw87yuyUweEFe0UJirrXEw1NasW00eF7sZjeG3SLBGz001ozxQ46Y9sofDvhBmWFtXQ==
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"
@@ -1080,10 +1080,10 @@ ret@~0.1.10:
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
-rg-bot@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/rg-bot/-/rg-bot-1.5.0.tgz#21fba0670d398285a751cbf2107164e9efb0667e"
-  integrity sha512-+QCYDFp8FsRPDuj2CMYxhYC5HBpcIQ5rFb6ZIX8IaxXDcOJNZwiH/uvzulIwxPV8HVSwj/L8M9UXgImk39HaRQ==
+rg-bot@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/rg-bot/-/rg-bot-1.6.0.tgz#0b9ab5fe482b41f09a511bd9462a7d2504224fa2"
+  integrity sha512-Wz8LXpMuEy3s3AM+hBKomOmN6qqeFlM1K4efocrnuvmBQw7T9fN8YyQZJr1/8AYelej58zpdj1w8zA+bBTDzwQ==
   dependencies:
     "@types/node" "^18.0.6"
     minecraft-data "^3.17.0"
@@ -1097,17 +1097,17 @@ rg-bot@1.5.0:
     rg-match-info "^1.0.0"
     vec3 "^0.1.7"
 
-rg-ctf-utils@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/rg-ctf-utils/-/rg-ctf-utils-1.5.0.tgz#723d6fb9f8a90d7b9efeacdc45363ce1e4700398"
-  integrity sha512-5YeOI+28dbhQjvxsnL2r4W5kZn/uzmHzz6VSt3824ba/wG2c5w2VSit43sfHKKV9Q4ZWGTg20E7Og+PwxDW23Q==
+rg-ctf-utils@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/rg-ctf-utils/-/rg-ctf-utils-1.0.1.tgz#4deda5f1be5c19976ef6841362882e6c2d4bea64"
+  integrity sha512-xAHR/GI7uwNWHBLwCaLMescPuQ2ZIId4WTKDLdIgubg//lR+BAL54K+7LuwO5Bj/7dHYu2PNW2kHqsxhOQsyvQ==
   dependencies:
     minecraft-data "^3.17.0"
     mineflayer "^4.5.1"
     mineflayer-pathfinder "^2.4.0"
     prismarine-entity "^2.1.1"
     prismarine-item "^1.11.5"
-    rg-bot "1.5.0"
+    rg-bot "1.6.0"
     rg-match-info "^1.0.0"
     vec3 "^0.1.7"
 
