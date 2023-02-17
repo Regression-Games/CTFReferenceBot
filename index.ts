@@ -45,7 +45,7 @@ export function configureBot(bot: RGBot) {
     })
 
     bot.on(CTFEvent.ITEM_COLLECTED, (collector: Entity, item: Item) => {
-        bot.chat(`I see that ${collector.username} picked up ${item.name}`)
+        bot.chat(`I see that ${collector.username} picked up ${item?.name}`)
     })
 
 }
