@@ -1,7 +1,7 @@
 import { RGBot } from "rg-bot";
 import {Entity} from "prismarine-entity";
 import {Item} from "prismarine-item";
-import RGCTFUtils from 'rg-ctf-utils';
+import RGCTFUtils, {CTFEvent} from 'rg-ctf-utils';
 import {Vec3} from "vec3";
 
 /**
@@ -12,39 +12,39 @@ export function configureBot(bot: RGBot) {
 
     bot.setDebug(true);
     bot.allowDigWhilePathing(false);
-    const ctfUtils = new RGCTFUtils(bot);
-    ctfUtils.debug = false;
+    const rgctfUtils = new RGCTFUtils(bot);
+    rgctfUtils.setDebug(false);
 
     bot.on('chat', async (username, message) => {
         if (username === bot.username) return;
         if (message === 'start') {
             bot.chat("Going to start capturing the flag!")
-            await ctfUtils.approachFlag()
+            await rgctfUtils.approachFlag()
         }
     })
 
-    ctfUtils.on('flagObtained', async (playerUsername: string) => {
+    bot.on(CTFEvent.FLAG_OBTAINED, async (collector: string) => {
         // If I was the one to obtain the flag, go and score!
-        if (playerUsername == bot.username()) {
-            await ctfUtils.scoreFlag();
+        if (collector == bot.username()) {
+            await rgctfUtils.scoreFlag()
         }
     });
 
-    ctfUtils.on('flagScored', async (team: string) => {
-        // The flag takes 10 seconds to respawn after scoring
-        bot.chat("Flag scored, waiting until it respawns")
+    bot.on(CTFEvent.FLAG_SCORED, async (teamName: string) => {
+        // After scoring, send a message to chate
+        bot.chat(`Flag scored by ${teamName} team, waiting until it respawns`)
     })
 
-    ctfUtils.on('flagAvailable', async (position: Vec3) => {
-        bot.chat("Flag is available (either dropped or spawned), going to get it")
-        await ctfUtils.approachFlag();
+    bot.on(CTFEvent.FLAG_AVAILABLE, async (position: Vec3) => {
+        bot.chat("Flag is available, going to get it")
+        await rgctfUtils.approachFlag();
     })
 
-    ctfUtils.on('itemDetected', (item: Item) => {
+    bot.on(CTFEvent.ITEM_DETECTED, (item: Item, entity: Entity) => {
         bot.chat(`I see that a ${item.name} has spawned`)
     })
 
-    ctfUtils.on('itemCollected', (collector: Entity, item: Item) => {
+    bot.on(CTFEvent.ITEM_COLLECTED, (collector: Entity, item: Item) => {
         bot.chat(`I see that ${collector.username} picked up ${item.name}`)
     })
 
