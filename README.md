@@ -1,5 +1,7 @@
 # RG Capture the Flag Reference Bot (Typescript)
 
+[![RG](./images/RGPlayNow.svg)](https://play.regression.gg) [![RG](./images/RGProfilePage.svg)](https://play.regression.gg/users/10) [![RG](./images/RGBotPage.svg)](https://play.regression.gg/leaderboard)
+
 This is a simple capture the flag example for Regression Games Capture the Flag game. The bot will repeatedly
 attempt to capture and score the flag.
 _Not sure what this is? Visit https://play.regression.gg for some programming fun!_
