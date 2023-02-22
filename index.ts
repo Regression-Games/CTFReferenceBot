@@ -20,10 +20,6 @@ export function configureBot(bot: RGBot) {
         }
     })
 
-    bot.on('spawn', () => {
-        bot.chat("I'm alive!");
-    })
-
     bot.on(CTFEvent.FLAG_OBTAINED, async (collector: string) => {
         // If I was the one to obtain the flag, go and score!
         if (collector == bot.username()) {
